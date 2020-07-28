@@ -1,2 +1,56 @@
 curl -X POST -i 'http://127.0.0.1:8080/user/register' --data '{"nickname": "hjw", "mail": "752973432@qq.com", "password": "123456"}'
 curl -X POST -i 'http://127.0.0.1:8080/user/register' --data '{"nickname": "hjw2", "mail": "hjw2@qq.com", "password": "123456"}'
+
+#登录认证
+curl -X PUT -H 'X-Authorization-Token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyIjoxLCJleHAiOjE1OTU4NzQyNTN9.0be7EgtiQNwy-Tp6HGUZoxIA1ZzXF_0vhCzr3tHJ1mk2XGlauxdrvs-E7GvORslOzVHVkrlOSKLzBE10Itly7g' -i 'http://127.0.0.1:8080/post?catalog=1'
+
+
+#草稿
+curl -X PUT -H 'X-Authorization-Token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyIjoxLCJleHAiOjE1OTU4NzQyNTN9.0be7EgtiQNwy-Tp6HGUZoxIA1ZzXF_0vhCzr3tHJ1mk2XGlauxdrvs-E7GvORslOzVHVkrlOSKLzBE10Itly7g' -i 'http://127.0.0.1:8080/post/draft' --data '{
+"post": 1,
+"content": "## test content\n ![test](test.png)"
+}'
+
+curl -X PUT -H 'X-Authorization-Token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyIjoxLCJleHAiOjE1OTU4NzQyNTN9.0be7EgtiQNwy-Tp6HGUZoxIA1ZzXF_0vhCzr3tHJ1mk2XGlauxdrvs-E7GvORslOzVHVkrlOSKLzBE10Itly7g' -i 'http://127.0.0.1:8080/post/draft' --data '{
+"post": 1,
+"content": "## test content\n ![test](test.png)",
+"title": "first title"
+}'
+
+#发布
+curl -X PUT -H 'X-Authorization-Token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyIjoxLCJleHAiOjE1OTU4NzQyNTN9.0be7EgtiQNwy-Tp6HGUZoxIA1ZzXF_0vhCzr3tHJ1mk2XGlauxdrvs-E7GvORslOzVHVkrlOSKLzBE10Itly7g' -i 'http://127.0.0.1:8080/post/publish' --data '{
+"post": 1,
+"content": "## test content\n ![test](test.png)",
+"title": "first title"
+}'
+
+#GET
+##by id
+http://127.0.0.1:8080/post/1
+##all
+http://127.0.0.1:8080/post
+##by user
+http://127.0.0.1:8080/post/user/1
+##by catalog
+http://127.0.0.1:8080/post/catalog/1
+
+#comment评论
+curl -X POST -H 'X-Authorization-Token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoxLCJleHAiOjE1OTU4Nzk3MjB9.9aDdmTgy68sTc8-BzEN321uIrFq-vBArmCdAmiGRvGPw41gUsFQxjHgIbv-DQ3CKDTYTwS9CzQ6yVEwrol2A_w' -i 'http://127.0.0.1:8080/comment' --data '{
+"post": 1,
+"content": "## test content\n ![test](test.png)"
+}'
+
+curl -X POST -H 'X-Authorization-Token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoxLCJleHAiOjE1OTU4Nzk3MjB9.9aDdmTgy68sTc8-BzEN321uIrFq-vBArmCdAmiGRvGPw41gUsFQxjHgIbv-DQ3CKDTYTwS9CzQ6yVEwrol2A_w' -i 'http://127.0.0.1:8080/comment' --data '{
+"post": 1,
+"content": "## test content\n ![test](test.png)",
+"ref": 1
+}'
+##comment查询
+curl -X GET -i 'http://127.0.0.1:8080/comment/post/1'
+
+#catalog
+curl -X POST -H 'X-Authorization-Token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoxLCJleHAiOjE1OTU4Nzk3MjB9.9aDdmTgy68sTc8-BzEN321uIrFq-vBArmCdAmiGRvGPw41gUsFQxjHgIbv-DQ3CKDTYTwS9CzQ6yVEwrol2A_w' -i 'http://127.0.0.1:8080/api/catalog' --data '{
+"name": "new catalog"
+}'
+curl -X DELETE -H 'X-Authorization-Token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoxLCJleHAiOjE1OTU4Nzk3MjB9.9aDdmTgy68sTc8-BzEN321uIrFq-vBArmCdAmiGRvGPw41gUsFQxjHgIbv-DQ3CKDTYTwS9CzQ6yVEwrol2A_w' -i 'http://127.0.0.1:8080/api/catalog/2'
+curl -X DELETE -H 'X-Authorization-Token: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoxLCJleHAiOjE1OTU4Nzk3MjB9.9aDdmTgy68sTc8-BzEN321uIrFq-vBArmCdAmiGRvGPw41gUsFQxjHgIbv-DQ3CKDTYTwS9CzQ6yVEwrol2A_w' -i 'http://127.0.0.1:8080/api/catalog/1'

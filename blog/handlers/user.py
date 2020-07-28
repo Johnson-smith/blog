@@ -9,7 +9,7 @@ from sqlalchemy import or_
 from m.utils import jsonify
 
 
-router = Router(prefix='/user')
+router = Router(prefix='/api/user')
 
 
 @router.route('/register', methods=['POST'])
@@ -37,7 +37,7 @@ def register(ctx, request):
     except Exception as e:
         logging.error(e)
         db.session.rollback()
-        return HTTPInternalServerError(e)
+        raise HTTPInternalServerError(e)
 
 
 @router.route('/login', methods=['POST'])
@@ -48,12 +48,12 @@ def login(ctx, request):
         password = payload['password']
     except Exception as e:
         raise HTTPBadRequest(e)
-    user = User.query.filter(User.mail == mail).first_or_404('user {} not exit'.format(mail))
-    print(bcrypt.hashpw(password.encode(), user.password.encode()))
-    print(user.password.encode())
+    user = User.query.filter(User.mail == mail).first_or_404('user {} not exist'.format(mail))
     if bcrypt.hashpw(password.encode(), user.password.encode()) == user.password.encode():
-        key = ctx.config.get_string('auth.key')
-        exp = datetime.datetime.utcnow() + datetime.timedelta(hours=ctx.config.get_int('auth.exp'))
-        token = jwt.encode({'user': user.id, 'exp': exp}, key, 'HS512').decode()
+        key = ctx.config.get_string('authorization.key')
+        exp = datetime.datetime.utcnow() + datetime.timedelta(hours=ctx.config.get_int('authorization.exp'))
+        token = jwt.encode({'user': user.id, 'exp': exp}, key, algorithm='HS512').decode()
+        print('user_id: {}, exp: {}, key: {}'.format(user.id, exp, key))
+
         return jsonify(code=200, token=token)
-    raise HTTPUnauthorized
+    raise HTTPUnauthorized()
