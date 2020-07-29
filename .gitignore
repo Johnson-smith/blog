@@ -7,3 +7,7 @@
 *.iml
 out
 gen
+/fe/node_modules/
+/blog/handlers/__pycache__/
+/fe/assets/node_modules/
+/blog/__pycache__/

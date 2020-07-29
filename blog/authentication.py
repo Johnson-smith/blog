@@ -17,13 +17,8 @@ class JWTAuthenticationProvider(AuthenticationProvider):
         if self.token is None:
             raise HTTPUnauthorized()
         try:
-            print('========开始安全检验')
-            print('========key is: {}'.format(self.key))
-            print('========token is: {}'.format(self.token))
-            print(type(self.token))
             decoded = jwt.decode(self.token.encode(), self.key, ['HS512'])
             user_id = decoded.get('user')
-
             if user_id is None:
                 raise HTTPUnauthorized()
             user = User.query.filter(User.id == user_id).first()
